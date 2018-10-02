@@ -1,0 +1,21 @@
+---
+- hosts: webservers
+  become: True
+  tasks:
+    - name: 'Make sure Appache is installed'
+      yum: 
+         name: httpd
+         state: present
+    - name: Make sure apache is up and enabled on reboot
+      service:
+         name: httpd
+         state: started
+         enabled: True
+    - name: Makesure /var/www/html is present
+      file:
+         path: /var/www/html/
+         state: directory      
+    - name: Get static website from git and deploy on apache
+      git:
+         repo: https://github.com/javahometech/javahome-app
+         dest: /var/www/html/
