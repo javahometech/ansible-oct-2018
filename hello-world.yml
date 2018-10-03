@@ -38,8 +38,8 @@
          dest: /var/www/html/
 
   handlers:
-      name: Restart Apache
-      service:
+     - name: Restart Apache
+       service:
           name: httpd
           state: restarted
 
