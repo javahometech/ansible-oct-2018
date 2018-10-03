@@ -1,16 +1,33 @@
 ---
 - hosts: webservers
   become: True
+  vars:
+     - new_http_port: 8080
+     - old_http_port: 9090  
   tasks:
-    - name: 'Make sure Appache is installed'
+    - name: Install all packages 
       yum: 
-         name: httpd
+         name: "{{item}}"
          state: present
+      with_items:
+         - httpd
+         - git   
     - name: Make sure apache is up and enabled on reboot
       service:
          name: httpd
          state: started
          enabled: True
+    - name: Update port numeber of Apache to 8080
+      lineinfile:
+         path: /etc/httpd/conf/httpd.conf
+         regexp: "^Listen {{old_http_port}}$"
+         line: "Listen {{new_http_port}}"
+         state: present
+      notify:
+         - Restart Apache
+    - name: Debug
+      debug: msg="^Listen {{old_http_port}}$"
+
     - name: Makesure /var/www/html is present
       file:
          path: /var/www/html/
@@ -19,3 +36,10 @@
       git:
          repo: https://github.com/javahometech/javahome-app
          dest: /var/www/html/
+
+  handlers:
+      name: Restart Apache
+      service:
+          name: httpd
+          state: restarted
+
