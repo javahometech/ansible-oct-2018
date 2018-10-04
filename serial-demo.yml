@@ -1,0 +1,10 @@
+---
+- hosts: all
+  serial:
+      -  1
+  tasks:
+     - name: 
+       debug:
+         msg: Running install
+       tags:
+         - install

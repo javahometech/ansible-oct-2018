@@ -1,0 +1,20 @@
+---
+- hosts: all
+  tasks:
+     - name: 
+       debug:
+         msg: Running install
+       tags:
+         - install
+
+     - name: 
+       debug:
+         msg: Running configure
+       tags:
+         - config
+     
+     - name: 
+       debug:
+         msg: Doing restart
+       tags:
+         - restart

@@ -1,0 +1,10 @@
+---
+- hosts: all
+  tasks:
+     - name: Install git on linux 
+       apt:
+         name: git
+         state: present
+       when: 
+         - ansible_os_family == "Debian"
+         - ansible_processor_cores == 1

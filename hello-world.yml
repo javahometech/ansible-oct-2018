@@ -21,8 +21,9 @@
       lineinfile:
          path: /etc/httpd/conf/httpd.conf
          regexp: "^Listen {{old_http_port}}$"
-         line: "Listen {{new_http_port}}"
          state: present
+         backrefs: yes
+         line: "Listen {{new_http_port}}"
       notify:
          - Restart Apache
     - name: Debug
